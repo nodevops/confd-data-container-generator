@@ -1,0 +1,6 @@
+# Ignore IntelliJ folder
+/.idea
+
+# Ignore test folders
+/setup/tmp
+/setup/config
