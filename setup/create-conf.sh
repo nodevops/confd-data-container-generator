@@ -22,15 +22,19 @@ import_repo(){
 }
 
 generate_file_env(){
-	# TODO: implement new output type
-	generate-file-env.py -t env -e ${ENV} -f ${OUT_DIR_DICT}/${OUTPUT_FILE_CONFIG_NAME} -r ${WORKDIR}/repo/dictionaries
+	# TODO: implement new output type (--env option)
+	generate-file-env.py \
+	    --type env \
+	    --env ${ENV} \
+	    --file ${OUT_DIR_DICT}/${OUTPUT_FILE_CONFIG_NAME} \
+	    --root-path ${WORKDIR}/repo/dictionaries && \
 	echo -e "File ${OUTPUT_FILE_CONFIG_NAME} generated!"
 }
 
 merge_data(){
 	cd ${WORKDIR}/repo/data
-	cp -v common/* ${OUT_DIR_DATA}/
-	cp -v ${ENV}/* ${OUT_DIR_DATA}/
+	cp -v common/* ${OUT_DIR_DATA}/ && \
+	cp -v ${ENV}/* ${OUT_DIR_DATA}/ && \
 	echo -e "Data merged!"
 }
 
