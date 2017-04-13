@@ -47,7 +47,7 @@ rm -r config/dictionaries/*
 ENV=dev-local
 APP_VERSION=v0.1.0
 TAG=${APP_VERSION}_${ENV}
-REPO="git@gitlab.com:cfurmaniak/guestbook-configuration-confd.git"
+REPO="https://gitlab.com/cfurmaniak/guestbook-configuration-confd.git"
 WORKDIR=$(pwd)/tmp
 OUT_DIR=$(pwd)/config
 OUT_DIR_DATA=${OUT_DIR}/data
