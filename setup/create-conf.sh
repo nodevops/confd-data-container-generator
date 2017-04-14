@@ -1,40 +1,59 @@
-#!/bin/sh
+#!/bin/bash
 
-# WARNING: the option '-e' disappear when the script is launched inside alpine OS (docker)
+set -x
 
-print_usage(){
+print_usage() {
 	echo -e 
-	echo -e "--long_argument=VALUE OR -sVALUE"
+	echo -e "Utilisation : create-conf.sh [OPTION]..."
+	echo -e "Generate a file for export environment variables from dictionaries."
+	echo -e "Merge files from data into one single folder"
+	echo -e
+	echo -e "\t -h, --help               print this help"
+	echo -e "\t -r, --repository         url for the cloneable repository"
+	echo -e "\t                          (default value: https://gitlab.com/cfurmaniak/guestbook-configuration-confd.git"
+	echo -e "\t -v, --app-version        application version on the repository"
+	echo -e "\t                          (default value: v0.1.0)"
+	echo -e "\t -e, --environment        name of the environment"
+	echo -e "\t                          (default value: dev-local)"
+	echo -e "\t -w, --working-directory  specify the working directory"
+	echo -e "\t                          (default value: ./tmp should be create before)"
+	echo -e "\t -n, --config-file-name   name of the output file generated"
+	echo -e "\t                          (default value: env.sh)"
+	echo -e "\t -o, --out-directory      folder where the generated file will be"
+	echo -e "\t                          (default value: ./config should be create before)"
+	echo -e
+	echo -e "Examples:"
+	echo -e "  ./create-conf.sh -vv2.2.6 -rhttps://github.com/vuejs/vue will generate value for this version of VUE.JS"
 	echo -e
 }
 
-print_state(){
+print_state() {
 	echo -e 
 	echo -e "#################################"
 	echo -e "$1"
 	echo -e "#################################"
 }
 
-import_repo(){
-	cd ${WORKDIR}
-	git clone -b ${TAG} ${REPO} repo
+import_repo() {
+	cd "${WORKDIR}" || exit 1
+	git clone -b "${TAG}" "${REPO}" repo
 	echo -e "Repository imported!"
 }
 
-generate_file_env(){
+generate_file_env() {
 	# TODO: implement new output type (--env option)
 	generate-file-env.py \
 	    --type env \
-	    --env ${ENV} \
-	    --file ${OUT_DIR_DICT}/${OUTPUT_FILE_CONFIG_NAME} \
-	    --root-path ${WORKDIR}/repo/dictionaries && \
+	    --env "${ENV}" \
+	    --file "${OUT_DIR_DICT}/${OUTPUT_FILE_CONFIG_NAME}" \
+	    --root-path "${WORKDIR}/repo/dictionaries" && \
 	echo -e "File ${OUTPUT_FILE_CONFIG_NAME} generated!"
 }
 
-merge_data(){
-	cd ${WORKDIR}/repo/data
-	cp -v common/* ${OUT_DIR_DATA}/ && \
-	cp -v ${ENV}/* ${OUT_DIR_DATA}/ && \
+merge_data() {
+	cd "${WORKDIR}/repo/data" || exit 1
+	cp -v common/* "${OUT_DIR_DATA}/" && \
+	cp -v "${ENV}/*" "${OUT_DIR_DATA}/" && \
 	echo -e "Data merged!"
 }
 
@@ -56,7 +75,7 @@ OUTPUT_FILE_CONFIG_NAME=env.sh
 # read the options
 SHORT_OPTS="h::r::v::e::w::n::o::"
 LONG_OPTS="help::,repository::,app-version::,environment::,working-directory::,config-file-name::,out-directory::"
-TEMP=`getopt -o ${SHORT_OPTS} --long ${LONG_OPTS} -- "$@"`
+TEMP=$(getopt -o ${SHORT_OPTS} --long ${LONG_OPTS} -- "$@")
 eval set -- "${TEMP}"
 
 # extract options and their arguments into variables.
@@ -96,12 +115,12 @@ while true ; do
             shift
             TAG=${APP_VERSION}_${ENV} ; OUT_DIR_DATA=${OUT_DIR}/data ; OUT_DIR_DICT=${OUT_DIR}/dictionaries
             break ;;
-        -h|--help) print_usage ; exit 1 ;;
+        -h|--help) print_usage ; exit 0 ;;
         *) print_usage ; exit 1 ;;
     esac
 done
 
-print_state "Configuration"
+print_state "Configuration $0"
 echo -e "\t ENV=${ENV}"
 echo -e "\t APP_VERSION=${APP_VERSION}"
 echo -e "\t TAG=${TAG}"
