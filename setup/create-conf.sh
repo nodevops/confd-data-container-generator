@@ -35,7 +35,7 @@ print_state() {
 }
 
 import_repo() {
-    cd "${WORKDIR}" || exit 1
+    cd "${WORKDIR}" || exit
     git clone -b "${TAG}" "${REPO}" repo
     echo -e "Repository imported!"
 }
@@ -51,9 +51,9 @@ generate_file_env() {
 }
 
 merge_data() {
-    cd "${WORKDIR}/repo/data" || exit 1
+    cd "${WORKDIR}/repo/data" || exit
     cp -v common/* "${OUT_DIR_DATA}/" && \
-    cp -v "${ENV}/*" "${OUT_DIR_DATA}/" && \
+    cp -v "${ENV}"/* "${OUT_DIR_DATA}/" && \
     echo -e "Data merged!"
 }
 
@@ -132,10 +132,10 @@ echo -e "\t OUTDIR_DICT=${OUT_DIR_DICT}"
 echo -e "\t OUTPUT_FILE_CONFIG_NAME=${OUTPUT_FILE_CONFIG_NAME}"
 
 print_state "Repository downloading…"
-import_repo
+import_repo || exit
 
 print_state "Configuration generating…"
-generate_file_env
+generate_file_env || exit
 
 print_state "Data merging…"
-merge_data
+merge_data || exit
