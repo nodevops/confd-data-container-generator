@@ -42,11 +42,6 @@ merge_data(){
 # main
 ###########################################################################################
 
-# clean last test
-rm -rf tmp/repo
-rm -r config/data/*
-rm -r config/dictionaries/*
-
 # default values
 ENV=dev-local
 APP_VERSION=v0.1.0
@@ -69,33 +64,33 @@ while true ; do
     case "$1" in
         -r|--repository)
             case "$2" in
-                "") REPO="git@gitlab.com:cfurmaniak/guestbook-configuration-confd.git" ; shift 2 ;;
-                *) REPO=$2 ; shift 2 ;;
+                "") REPO="https://gitlab.com/cfurmaniak/guestbook-configuration-confd.git" ; shift 2 ;;
+                 *) REPO=$2 ; shift 2 ;;
             esac ;;
         -v|--app-version)
             case "$2" in
                 "") APP_VERSION=v0.1.0 ; shift 2 ;;
-                *) APP_VERSION=$2 ; shift 2 ;;
+                 *) APP_VERSION=$2 ; shift 2 ;;
             esac ;;
         -e|--environment)
             case "$2" in
                 "") ENV=dev-local ; shift 2 ;;
-                *) ENV=$2 ; shift 2 ;;
+                 *) ENV=$2 ; shift 2 ;;
             esac ;;
         -w|--working-directory)
             case "$2" in
                 "") WORKDIR=$(pwd)/tmp ; shift 2 ;;
-                *) WORKDIR=$2 ; shift 2 ;;
+                 *) WORKDIR=$2 ; shift 2 ;;
             esac ;;
         -n|--config-file-name)
             case "$2" in
                 "") OUTPUT_FILE_CONFIG_NAME=env.sh ; shift 2 ;;
-                *) OUTPUT_FILE_CONFIG_NAME=$2 ; shift 2 ;;
+                 *) OUTPUT_FILE_CONFIG_NAME=$2 ; shift 2 ;;
             esac ;;
         -o|--out-directory)
             case "$2" in
                 "") OUT_DIR=$(pwd)/config ; shift 2 ;;
-                *) OUT_DIR=$2 ; shift 2 ;;
+                 *) OUT_DIR=$2 ; shift 2 ;;
             esac ;;
         --)
             shift
