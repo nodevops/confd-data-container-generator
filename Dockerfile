@@ -4,6 +4,7 @@ LABEL maintainer "Jules.Hablot@zenika.com" \
       maintainer "christophe.furmaniak@zenika.com"
 
 RUN apk add --no-cache \
+    bash \
     python \
     git
 
